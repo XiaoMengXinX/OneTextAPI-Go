@@ -12,21 +12,21 @@ example:
 package api
 
 import (
-	onetext "github.com/XiaoMengXinX/OneTextAPI-Go"
-	"net/http"
+    onetext "github.com/XiaoMengXinX/OneTextAPI-Go"
+    "net/http"
 )
 
 var o onetext.OneText
 
 func init() {
-	_, err := o.GetUrl("https://raw.githubusercontent.com/lz233/OneText-Library/master/OneText-Library.json")
-	if err != nil {
-		panic(err)
-	}
+    _, err := o.GetUrl("https://raw.githubusercontent.com/lz233/OneText-Library/master/OneText-Library.json")
+    if err != nil {
+        panic(err)
+    }
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	o.Handler(w, r)
+    o.Handler(w, r)
 }
 ```
 
@@ -38,15 +38,15 @@ example:
 package main
 
 import (
-	onetext "github.com/XiaoMengXinX/OneTextAPI-Go"
+    onetext "github.com/XiaoMengXinX/OneTextAPI-Go"
 )
 
 func main() {
-	o, err := onetext.New().ReadFile("./OneText-Library.json")
-	if err != nil {
-		panic(err)
-	}
-	o.StartServer(8000)
+    o, err := onetext.New().ReadFile("./OneText-Library.json")
+    if err != nil {
+        panic(err)
+    }
+    o.StartServer(8000)
 }
 ```
 
