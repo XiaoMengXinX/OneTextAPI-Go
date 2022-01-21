@@ -15,7 +15,8 @@ func (o *OneText) Handler(w http.ResponseWriter, r *http.Request) {
 
 // StartServer start a local server
 func (o *OneText) StartServer(port int) error {
-	http.HandleFunc("/", o.Handler)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", o.Handler)
 	fmt.Printf("Starting an OneText server on 127.0.0.1:%d\n", port)
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	return http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
 }

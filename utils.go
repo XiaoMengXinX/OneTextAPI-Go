@@ -16,30 +16,30 @@ func New() *OneText {
 }
 
 // ReadBytes read json from bytes
-func (o *OneText) ReadBytes(b []byte) error {
+func (o *OneText) ReadBytes(b []byte) (*OneText, error) {
 	var d []Sentence
 	err := json.Unmarshal(b, &d)
 	if err != nil {
-		return err
+		return o, err
 	}
 	o.s = append(o.s, d...)
-	return nil
+	return o, nil
 }
 
 // ReadFile read json from a file
-func (o *OneText) ReadFile(path string) error {
+func (o *OneText) ReadFile(path string) (*OneText, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return err
+		return o, err
 	}
 	return o.ReadBytes(b)
 }
 
 // GetUrl get json from an url
-func (o *OneText) GetUrl(url string) error {
+func (o *OneText) GetUrl(url string) (*OneText, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return err
+		return o, err
 	}
 	defer func(Body io.ReadCloser) {
 		err = Body.Close()
