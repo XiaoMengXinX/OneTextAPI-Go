@@ -9,6 +9,7 @@ type Sentence struct {
 	Uri  string   `json:"uri,omitempty"`
 }
 
-type onetext struct {
+// OneText sentence pointer
+type OneText struct {
 	s []Sentence
 }
