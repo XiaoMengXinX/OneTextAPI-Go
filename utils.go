@@ -2,6 +2,7 @@ package onetext
 
 import (
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -15,31 +16,36 @@ func New() *OneText {
 }
 
 // ReadBytes read json from bytes
-func (o *OneText) ReadBytes(b []byte) (*OneText, error) {
-	return o, json.Unmarshal(b, &o.s)
+func (o *OneText) ReadBytes(b []byte) error {
+	var d []Sentence
+	err := json.Unmarshal(b, &d)
+	if err != nil {
+		return err
+	}
+	o.s = append(o.s, d...)
+	return nil
 }
 
 // ReadFile read json from a file
-func (o *OneText) ReadFile(path string) (*OneText, error) {
+func (o *OneText) ReadFile(path string) error {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return o, err
+		return err
 	}
-	return o, json.Unmarshal(b, &o.s)
+	return o.ReadBytes(b)
 }
 
 // GetUrl get json from an url
-func (o *OneText) GetUrl(url string) (*OneText, error) {
+func (o *OneText) GetUrl(url string) error {
 	resp, err := http.Get(url)
 	if err != nil {
-		return o, err
+		return err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err = Body.Close()
+	}(resp.Body)
 	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return o, err
-	}
-	return o, json.Unmarshal(b, &o.s)
+	return o.ReadBytes(b)
 }
 
 // Random get a random sentence
