@@ -1,7 +1,7 @@
 package onetext
 
-// Sentense 句子数据结构
-type Sentense struct {
+// Sentence data struct
+type Sentence struct {
 	Text string   `json:"text"`
 	By   string   `json:"by,omitempty"`
 	From string   `json:"from,omitempty"`
@@ -10,5 +10,5 @@ type Sentense struct {
 }
 
 type onetext struct {
-	s []Sentense
+	s []Sentence
 }

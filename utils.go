@@ -9,38 +9,55 @@ import (
 	"time"
 )
 
-// ReadBytes 读取字节
-func (o *onetext) ReadBytes(b []byte) error {
-	return json.Unmarshal(b, &o.s)
+// New OneText
+func New() *onetext {
+	return &onetext{nil}
 }
 
-// ReadFile 读取 json 文件
-func (o *onetext) ReadFile(path string) error {
+// ReadBytes read json from bytes
+func (o *onetext) ReadBytes(b []byte) (*onetext, error) {
+	return o, json.Unmarshal(b, &o.s)
+}
+
+// ReadFile read json from a file
+func (o *onetext) ReadFile(path string) (*onetext, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return err
+		return o, err
 	}
-	return json.Unmarshal(b, &o.s)
+	return o, json.Unmarshal(b, &o.s)
 }
 
-// GetUrl 从 url 获取 json
-func (o *onetext) GetUrl(url string) error {
+// GetUrl get json from an url
+func (o *onetext) GetUrl(url string) (*onetext, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return err
+		return o, err
 	}
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return err
+		return o, err
 	}
-	return json.Unmarshal(b, &o.s)
+	return o, json.Unmarshal(b, &o.s)
 }
 
-// Random 随机一个句子
-func (o *onetext) Random() Sentense {
+// Random get a random sentence
+func (o *onetext) Random() Sentence {
 	if len(o.s) != 0 {
 		return o.s[rand.New(rand.NewSource(time.Now().UnixNano())).Intn(len(o.s))]
 	}
-	return Sentense{}
+	return Sentence{}
+}
+
+// AddOne add a sentence
+func (o *onetext) AddOne(sentence Sentence) *onetext {
+	o.s = append(o.s, sentence)
+	return o
+}
+
+// Add sentences
+func (o *onetext) Add(sentences []Sentence) *onetext {
+	o.s = append(o.s, sentences...)
+	return o
 }
