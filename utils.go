@@ -10,13 +10,13 @@ import (
 	"time"
 )
 
-// New OneText
-func New() *OneText {
-	return &OneText{nil}
+// New onetext
+func New() *onetext {
+	return &onetext{nil}
 }
 
 // ReadBytes read json from bytes
-func (o *OneText) ReadBytes(b []byte) (*OneText, error) {
+func (o *onetext) ReadBytes(b []byte) (*onetext, error) {
 	var d []Sentence
 	err := json.Unmarshal(b, &d)
 	if err != nil {
@@ -27,7 +27,7 @@ func (o *OneText) ReadBytes(b []byte) (*OneText, error) {
 }
 
 // ReadFile read json from a file
-func (o *OneText) ReadFile(path string) (*OneText, error) {
+func (o *onetext) ReadFile(path string) (*onetext, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
 		return o, err
@@ -36,7 +36,7 @@ func (o *OneText) ReadFile(path string) (*OneText, error) {
 }
 
 // GetUrl get json from an url
-func (o *OneText) GetUrl(url string) (*OneText, error) {
+func (o *onetext) GetUrl(url string) (*onetext, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return o, err
@@ -49,7 +49,7 @@ func (o *OneText) GetUrl(url string) (*OneText, error) {
 }
 
 // Random get a random sentence
-func (o *OneText) Random() Sentence {
+func (o *onetext) Random() Sentence {
 	if len(o.s) != 0 {
 		return o.s[rand.New(rand.NewSource(time.Now().UnixNano())).Intn(len(o.s))]
 	}
@@ -57,13 +57,13 @@ func (o *OneText) Random() Sentence {
 }
 
 // AddOne add a sentence
-func (o *OneText) AddOne(sentence Sentence) *OneText {
+func (o *onetext) AddOne(sentence Sentence) *onetext {
 	o.s = append(o.s, sentence)
 	return o
 }
 
 // Add sentences
-func (o *OneText) Add(sentences []Sentence) *OneText {
+func (o *onetext) Add(sentences []Sentence) *onetext {
 	o.s = append(o.s, sentences...)
 	return o
 }

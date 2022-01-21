@@ -16,7 +16,7 @@ import (
     "net/http"
 )
 
-var o onetext.OneText
+var o = onetext.New()
 
 func init() {
     _, err := o.GetUrl("https://raw.githubusercontent.com/lz233/OneText-Library/master/OneText-Library.json")
