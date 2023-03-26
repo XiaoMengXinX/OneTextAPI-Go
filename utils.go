@@ -71,7 +71,11 @@ func (o *onetext) Add(sentences []Sentence) *onetext {
 // Get get a sentence by index
 func (o *onetext) Get(index int) Sentence {
 	if len(o.s) != 0 && index < len(o.s) {
-		return o.s[index]
+		if index >= 0 {
+			return o.s[index]
+		} else if len(o.s)+index >= 0 {
+			return o.s[len(o.s)+index]
+		}
 	}
 	return Sentence{}
 }
